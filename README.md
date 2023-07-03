@@ -29,7 +29,5 @@ Materiales
     - [P-values y tamaño del efecto](https://github.com/elrobin/introstatsconr/tree/master/p-values). Lecturas para ahondar sobre los problemas que plantea el uso de p-valores.
 
 
-Historial
-=========
-- Versión 1.0. Impartido en el Programa de Doctorado de Ciencias Sociales de la Universidad de Granada 19-20 de abril de 2018.
+
 
