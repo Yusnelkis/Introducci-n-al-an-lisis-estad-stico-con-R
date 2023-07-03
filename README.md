@@ -13,9 +13,7 @@ Materiales
 
 2. **Datos**. Disponibles en la carpeta `data`.
 
-3. **Prácticas**. Ejercicios disponibles en la carpeta *practicas*
-
-4. **Código**. Resolución de prácticas y demos disponibles en la carpeta *notas*.
+3. **Scripts**. Resolución de prácticas y demos disponibles en la carpeta *notas*.
 
 5. **Recursos**.
 
