@@ -13,7 +13,7 @@ Materiales
 
 2. **Datos**. Disponibles en la carpeta `data`.
 
-3. **Scripts**. Resolución de prácticas y demos disponibles en la carpeta *notas*.
+3. **Scripts**. Resolución de prácticas.
 
 5. **Recursos**.
 
@@ -25,6 +25,7 @@ Materiales
     - [ggstatsplot](https://github.com/IndrajeetPatil/ggstatsplot). Paquete basado en `ggplot2 `para visualizar análisis estadísticos (i.e., regresiones, ANOVA, etc.)
   - Estadística.
     - [P-values y tamaño del efecto](https://github.com/elrobin/introstatsconr/tree/master/p-values). Lecturas para ahondar sobre los problemas que plantea el uso de p-valores.
+    - [R para epidemiología aplicada y salud pública] (https://epirhandbook.com/es/index.html)
 
 
 
