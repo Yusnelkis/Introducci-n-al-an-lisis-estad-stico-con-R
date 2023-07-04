@@ -13,7 +13,7 @@ Materiales
 
 2. **Datos**. Disponibles en la carpeta `data`.
 
-3. **Scripts**. Resolución de prácticas.
+3. **Scripts**. Resolución de prácticas. Disponible en la carpeta Scripts
 
 5. **Recursos**.
 
