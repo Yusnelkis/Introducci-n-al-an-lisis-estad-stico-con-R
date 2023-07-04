@@ -25,7 +25,7 @@ Materiales
     - [ggstatsplot](https://github.com/IndrajeetPatil/ggstatsplot). Paquete basado en `ggplot2 `para visualizar análisis estadísticos (i.e., regresiones, ANOVA, etc.)
   - Estadística.
     - [P-values y tamaño del efecto](https://github.com/elrobin/introstatsconr/tree/master/p-values). Lecturas para ahondar sobre los problemas que plantea el uso de p-valores.
-    - [R para epidemiología aplicada y salud pública] (https://epirhandbook.com/es/index.html)
+    - [R para epidemiología aplicada y salud pública](https://epirhandbook.com/es/index.html)
 
 
 
