@@ -21,6 +21,7 @@ Materiales
     - [Instalación de R y R Studio](https://estadistica-dma.ulpgc.es/cursoR4ULPGC/2-instalacion.html) Angelo Santana & Carmen Nieves Hernández,
 Departamento de Matemáticas, ULPGC
     - [Manual de R](https://fhernanb.github.io/Manual-de-R/). Freddy Hernández y Olga Usuga
+    - [R tutor](http://rtutor.ai/) 
     - [Introduction to Data Science](https://rafalab.github.io/dsbook/). Manual introductorio por Rafael A. Irizarry
     - [r-bloggers](https://www.r-bloggers.com/). Blog en el que se publican numerosos tutoriales, paquetes, etc.
     - (R for Data Science)[http://r4ds.had.co.nz/]. Libro tutorial de Hadley Wickham, emplea la mayor parte de los paquetes que él mismo ha desarrollado. Son de los más populares, entre ellos está `ggplot2`.
