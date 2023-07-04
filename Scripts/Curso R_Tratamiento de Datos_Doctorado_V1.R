@@ -1,7 +1,20 @@
-#Análisis Exploratorio con r- curso Doctorado 
+Análisis Exploratorio con R - curso Doctorado BIBUPO
 
 
 #Cargar paquetes 
+
+# Instala el paquete ggplot y algunas extensiones útiles
+install.packages("ggplot2")
+install.packages("ggplot2")
+install.packages("gmodels")
+install.packages("ggthemes")
+install.packages("tidyverse")
+install.packages("ggstatsplot")
+install.packages("rstantools")
+install.packages("Hmisc")
+install.packages("nortest")
+
+# Cargamos librerías
 
 options(scipen = 999)
 library(dplyr)
@@ -10,6 +23,8 @@ library(readxl)
 library(gmodels)
 library(Hmisc)
 library(ggthemes)
+library(haven)
+library(nortest)
 
 #(Recordar que si no ha instalado estos paquetes debe correr primero el comando: install.packages("nombre del paquete"))
 
@@ -17,7 +32,8 @@ library(ggthemes)
 
 #Vamos a utilizar los archivos:
 
-##Antes de comenzar, hay que cambiar el directorio de trabajo y seleccionar el folder en donde tenemos nuestros archivos. Esto se hace con el comando setwd().
+##Antes de comenzar, hay que cambiar el directorio de trabajo y seleccionar el folder en donde tenemos nuestros archivos. 
+##Esto se hace con el comando setwd().
 
 ###Ahora podemos importar los archivos de varias formas. Podemos hacerlo desde el menú de arriba, usando: File -> Import Dataset y seleccionando el tipo de archivo que queremos importar.
 
@@ -27,7 +43,6 @@ library(ggthemes)
 
 #Importar archivos 
 
-library(haven)
 EMPLEADOS <- read_sav("C:/Users/Usuario/Downloads/EMPLEADOS.sav")
 View(EMPLEADOS)
 
@@ -55,17 +70,140 @@ class(EMPLEADOS$sexo)
 EMPLEADOS$sexo = as.factor(EMPLEADOS$sexo)
 
 #Para convertir varias variables a factor
+
 #Las guardamos en un vector
 cols <- c("sexo","educ", "catlab")
+
 #Le aplicamos una misma función a todas las columnas con lapply  
 EMPLEADOS[cols] <- lapply(EMPLEADOS[cols], factor)
 
+## Análisis univariante 
+
 #vARIABLES CATEGÓRICAS 
+
 #vamos a calcular tablas de frecuencia y esto lo hacemos con el comando table()
 
 #Frecuencias simples
 
-table(EMPLEADOS$sexo)
+t_sexo = table(EMPLEADOS$sexo)
+
+#Datos porcentuales, frecuencia relativa 
+
+prop.table(t_sexo)
+
+
+#Visualizar variables cualitativas 
+
+# Gráfico simple de barras de una variable categórica
+
+
+ggplot(EMPLEADOS)+
+  geom_bar(aes(x=sexo))
+
+
+
+#vALORES NUMÉRICOS
+
+summary(EMPLEADOS)
+
+##Si queremos calcular los estadísticos para una sola variable ponemos el nombre de la base de datos seguido del signo de $. Por ejemplo: summary(encuesta$ingreso).
+
+###Además podemos hacer uso de funciones para calcular individualmente los estadísticos descriptivos: mean(), median(), min(), max(), IQR() (rango intercuartílico), sd() (desviación estándar).
+
+mean(EMPLEADOS$salario)
+
+#SI QUEREMPOS UN PANORAMA MÁS COMPLETO DE LAS VARIABLES
+
+describe(EMPLEADOS)
+
+
+plot(EMPLEADOS$salario)
+
+boxplot(EMPLEADOS$salario)
+
+
+#histograma 
+
+hist(EMPLEADOS$salario)
+
+ggplot(EMPLEADOS)+
+  geom_histogram(aes(x=salario)) 
+
+#agregamos densidad con color
+
+ggplot(EMPLEADOS, aes(x=salario)) + geom_density(col="blue") +
+  geom_histogram(aes(y=..density..), colour="black", fill=NA)
+
+#eXTRAER EL PARÁMETRO DE UNA VARIABLE CUANTIATIVA EN FUNCIÓN DE UNA CUALITATIVA
+
+sapply(split(x=EMPLEADOS$salario, f=EMPLEADOS$sexo), mean)
+
+
+#AGREGAR DATOS 
+
+#Si queremos agregar datos por variables categóricas utilizamos paquete dplyr (Muy usado )
+
+
+EMPLEADOS <- EMPLEADOS %>%
+  group_by(catlab) %>%
+  mutate(salariopromedio=mean(salario))
+
+View(EMPLEADOS)
+
+# siqueremos agrupar por más de una variable:
+##También podemos agrupar por más de una variable, lo único que debemos hacer es separar las variables por coma. 
+
+#R4esumir valores con summarise()
+
+EMPLEADOS %>%
+  group_by(catlab) %>%
+  summarise(salariopromedio=mean(salario),
+            expprevia=mean(expprev))
+
+#si queremos agregar más de un estadístico, solo es separarlos por coma
+
+
+EMPLEADOS %>%
+  group_by(catlab) %>%
+  summarise(salariopromedio=mean(salario),
+            n(),
+            min(salario),
+            max(salario))
+
+#Pruebas de normalidad 
+
+##En la literatura estadística se reportan varias pruebas, algunas de ellas se listan a continuación.
+
+## Prueba Shapiro-Wilk con la función shapiro.test. (Con n < 50)
+## Prueba Anderson-Darling con la función ad.test del paquete nortest.
+## Prueba Cramer-von Mises con la función cvm.test del paquete nortest.
+## Prueba Lilliefors (Kolmogorov-Smirnov) con la función lillie.test del paquete nortest.(con n> 50)
+## Prueba Pearson chi-square con la función pearson.test del paquete nortest.
+
+shapiro.test(EMPLEADOS$salario) #si la n < 50
+
+lillie.test(EMPLEADOS$salario) #si la n > 50
+
+
+
+# PRUEBA DE NORMALIDAD PARA ESTRATOS 
+
+# Creo el subconjunto de datos 
+
+salarios_sexo <- split(EMPLEADOS$salario, EMPLEADOS$sexo)
+
+salarios_sexo
+
+class(salarios_sexo)
+
+lapply(salarios_sexo, shapiro.test)
+
+
+
+............................................................
+
+### Análisis bivariantes 
+
 
 #Tablas de contingencia (Tabulamos dos variables)
 
@@ -87,11 +225,8 @@ prop.table(table(EMPLEADOS$sexo, EMPLEADOS$catlab), 2)
 
 CrossTable(EMPLEADOS$sexo, EMPLEADOS$catlab)
 
-#Si quiero que extraiga el valor del chi-cudrado y los 5 por filas y columnas
 
-CrossTable(EMPLEADOS$sexo, EMPLEADOS$catlab)
-
-#OJO VER COMO SACAR BIEN EL CHI-CUADRADO 
+#SACAR BIEN EL CHI-CUADRADO 
 
 #opcion A
 
@@ -106,62 +241,13 @@ chisq.test(cuadrado)
 fisher.test(cuadrado,simulate.p.value=TRUE)
 
 
+#Visualización exploratoria de variables cualitativas 
+
+
+
+
 ..................................................................
-#vALORES NUMÉRICOS
 
-summary(EMPLEADOS)
-
-##Si queremos calcular los estadísticos para una sola variable ponemos el nombre de la base de datos seguido del signo de $. Por ejemplo: summary(encuesta$ingreso).
-
-###Además podemos hacer uso de funciones para calcular individualmente los estadísticos descriptivos: mean(), median(), min(), max(), IQR() (rango intercuartílico), sd() (desviación estándar).
-
-mean(EMPLEADOS$salario)
-
-#SI QUEREMPOS UN PANORAMA MÁS COMPLETO DE LAS VARIABLES
-
-describe(EMPLEADOS)
-
-
-
-plot(EMPLEADOS$salario)
-
-boxplot(EMPLEADOS$salario)
-
-
-#histograma 
-
-hist(EMPLEADOS$salario)
-
-#AGREGAR DATOS 
-
-#Si queremos agregar datos por variables categóricas utilizamos pauete dplyr (Muy usado )
-
-
-EMPLEADOS <- EMPLEADOS %>%
-  group_by(catlab) %>%
-  mutate(salariopromedio=mean(salario))
-
-View(EMPLEADOS)
-
-# siqueremos agrupar por más de una variable:
-##También podemos agrupar por más de una variable, lo único que debemos hacer es separar las variables por coma. 
-
-#R4esumir valores con summarise()
-
-EMPLEADOS %>%
-  group_by(catlab) %>%
-  summarise(salariopromedio=mean(salario),
-           expprevia=mean(expprev))
-
-#si queremos agregar más d eun estad+ístico, solo es separarlos por coma
-
-
-EMPLEADOS %>%
-  group_by(catlab) %>%
-  summarise(salariopromedio=mean(salario),
-            n(),
-            min(salario),
-            max(salario))
 
 
 
@@ -207,5 +293,7 @@ correlacion<-round(cor(Europa), 1)
 corrplot(correlacion, method="number", type="upper")
 
 chart.Correlation(base, histogram = F, pch = 19)
+
+
 
 
